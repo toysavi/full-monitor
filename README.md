@@ -37,6 +37,26 @@ This repository contains the setup for running Grafana with NGINX as a reverse p
 ---
 
 ## Setup Instructions
+### Install Docker Compose Server
+1. Install Docker Engine from official resources [Docker Website](https://docs.docker.com/engine/install/).
+2. Install dependecy package:
+    
+    - For Ubuntu/Debien
+    ```
+    sudo apt-get install git uzip -y
+    ```
+     - For Oracle/RHEL
+    ```
+    sudo yum install git uzip -y
+    ```
+
+     or
+
+    ```
+    sudo dnf install git uzip -y
+    ```
+
+### Setup Grafana and NGINX Reverse Proxy
 1. **Create direcitory ``Grafana``**
     
     Create directory for Grafana!
