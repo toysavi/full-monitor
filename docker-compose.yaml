@@ -1,0 +1,45 @@
+version: '3.5'
+
+services:
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    env_file:
+      - ./env_file/GF_SECURITY_ADMIN_PASSWORD
+    networks:
+      - grafana_net_backend
+      - grafana_net_frontend
+
+  nginx-proxy-grafana:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx-grafana.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - grafana
+    networks:
+      - grafana_net_frontend
+
+networks:
+  grafana_net_frontend:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.238.0/24
+
+  grafana_net_backend:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
+    internal: true
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.239.0/24
