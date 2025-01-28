@@ -43,19 +43,20 @@ This repository contains the setup for running Grafana with NGINX as a reverse p
     
     - For Ubuntu/Debien
     ```
-    sudo apt-get install git uzip -y
+    sudo apt-get install git -y
     ```
      - For Oracle/RHEL
     ```
-    sudo yum install git uzip -y
+    sudo yum install git -y
     ```
 
      or
 
     ```
-    sudo dnf install git uzip -y
+    sudo dnf install git -y
     ```
 
+    For others OS, please kindly find a right command to install `git`.
 ### Setup Grafana and NGINX Reverse Proxy
 1. **Create direcitory ``Grafana``**
     
