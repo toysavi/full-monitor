@@ -48,22 +48,40 @@ This repository contains the setup for running Grafana with NGINX as a reverse p
     
     - For Ubuntu/Debien
     ```
-    sudo apt-get install git docker-compose -y
+    sudo apt-get install git -y
     ```
      - For Oracle/RHEL
     ```
-    sudo yum install git docker-compose -y
+    sudo yum install git -y
     ```
 
      or
 
     ```
-    sudo dnf install git docker-compose -y
+    sudo dnf install git -y
     ```
 
     For others OS, please kindly find a right command to install `git`.
+3. Install ``docker-compose`` Using the Latest Binary
 
+    Docker Compose is now a plugin for Docker and can be installed using the following steps:
+    
+    - Download ``Docker Compose`` package to ``/usr/local/bin/docker-compose``
 
+        ```
+        sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+        ```
+    - Make the Binary Executable
+
+        Change the permissions to make the Docker Compose binary executable:
+        
+        ```
+        sudo chmod +x /usr/local/bin/docker-compose
+        ```
+    - Verify compose version
+        ```
+        docker-compose --version
+        ```
 
 ### Setup Grafana and NGINX Reverse Proxy
 1. **Create direcitory ``Grafana``**
