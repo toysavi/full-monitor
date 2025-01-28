@@ -1,5 +1,10 @@
 # Grafana Monitoring with NGINX Reverse Proxy
 
+![Grafana and NGINX Reverse Proxy](./images/imags.png)
+
+
+
+
 This repository contains the setup for running Grafana with NGINX as a reverse proxy using Docker Compose. The setup ensures secure communication via SSL, supports custom networking, and simplifies sensitive data management using environment variables.
 
 ---
@@ -186,6 +191,13 @@ This repository contains the setup for running Grafana with NGINX as a reverse p
 
     - Username: ``admin``
     - Password: Your replaced password in ``env_file``
+12. **Enjoy to build your professional dashboard monitoring**
+    
+    Example dashboard designed:
+
+    ![Grafana and NGINX Reverse Proxy](./images/sample_dashbaord.png)
+
+
 ## Conclusion  
 
 This repository provides a ready-to-use setup for running **Grafana** with an **NGINX reverse proxy**, leveraging Docker Compose for simplicity and scalability. By securely storing sensitive information in the **`env_file`** directory and enabling SSL support, this setup ensures a secure and efficient monitoring environment.  
