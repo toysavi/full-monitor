@@ -37,7 +37,7 @@ This repository contains the setup for running Grafana with NGINX as a reverse p
 ---
 
 ## Setup Instructions
-1. **Create direcitory Grafana**
+1. **Create direcitory ``Grafana``**
     
     Create directory for Grafana!
     ```
@@ -55,7 +55,7 @@ This repository contains the setup for running Grafana with NGINX as a reverse p
     ```
     mkdir -p env_file
     ```
-4. **Modify file nginx-grafana.conf**
+4. **Modify file ``nginx-grafana.conf``**
     
     - Change "view.doamin.com" to your domain
         ```
@@ -125,43 +125,50 @@ This repository contains the setup for running Grafana with NGINX as a reverse p
             }
         }
         ```
-
-
-
-4. **Make a password for Grafana Admin**
+5. **Make a password for ``Grafana Admin``**
     ```
     echo "GF_SECURITY_ADMIN_PASSWORD=YourStrongP@ssword" > env_file/GF_SECURITY_ADMIN_PASSWORD
     ```
-    Note: Replace "YourStrongP@ssword" to your own password
+    ``Note``: Replace "YourStrongP@ssword" to your own password
 
-5. **Create direcitory ssl**
+6. **Create direcitory `ssl`**
     
     Create directory for Certifcate store!
     ```
     mkdir ssl/
     ```
-    Note: copy your private key ssl to ./ssh
+    ``Note``: copy your private key ssl to ./ssh
     
-    - Rename certificate file to "cert.crt"
-    - Rename key file to "cert.key".
+    - Rename certificate file to ``cert.crt``
+    - Rename key file to ``cert.key``.
 
-6. **Grant Permission to 775**
+7. **Grant Permission to 775**
     ```
     chmod 755 -R /Grafana
     ```
-7. **Start the Services**
+8. **Start the Services**
     ```
     docker-compose up -d
     ```
-8. **Verify containers status**
+9. **Verify containers status**
     ```
     docker ps
     ```
-8. **Verify logs**
+10. **Verify logs**
     ```
     docker-compose logs
     ```
-9. **URL Access**
+11. **URL Access**
     ```
     https://view.domain:443
     ```
+
+    - Username: ``admin``
+    - Password: Your replaced password in ``env_file``
+## Conclusion  
+
+This repository provides a ready-to-use setup for running **Grafana** with an **NGINX reverse proxy**, leveraging Docker Compose for simplicity and scalability. By securely storing sensitive information in the **`env_file`** directory and enabling SSL support, this setup ensures a secure and efficient monitoring environment.  
+
+Whether you're setting up for production or testing purposes, this project offers a flexible and secure foundation for your monitoring needs. Customize, deploy, and start visualizing your metrics with ease!  
+
+Happy Monitoring! 🚀  
