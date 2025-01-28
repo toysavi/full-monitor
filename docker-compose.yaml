@@ -10,7 +10,8 @@ services:
     networks:
       - grafana_net_backend
       - grafana_net_frontend
-
+    volumes:
+      - grafana_data:/var/lib/grafana  # Persist Grafana data
   nginx-proxy-grafana:
     image: nginx:latest
     ports:
@@ -43,3 +44,5 @@ networks:
       driver: default
       config:
         - subnet: 172.16.239.0/24
+volumes:
+  grafana_data:  # Declare volume to persist Grafana data
