@@ -48,34 +48,36 @@ This repository contains the setup for running Grafana with NGINX as a reverse p
     
     - For Ubuntu/Debien
     ```
-    sudo apt-get install git -y
+    sudo apt-get install git docker-compose -y
     ```
      - For Oracle/RHEL
     ```
-    sudo yum install git -y
+    sudo yum install git docker-compose -y
     ```
 
      or
 
     ```
-    sudo dnf install git -y
+    sudo dnf install git docker-compose -y
     ```
 
     For others OS, please kindly find a right command to install `git`.
+
+
+
 ### Setup Grafana and NGINX Reverse Proxy
 1. **Create direcitory ``Grafana``**
     
     Create directory for Grafana!
     ```
     mkdir /Grafana
-    chmod 755 /Grafana
     cd /Grafana
     ```
 2. **Clone the Repository**:
    ```bash
    git clone https://github.com/toysavi/grafana-monitor.git .
    ```
-3. **Create direcitory env_file**
+3. **Create direcitory ``env_file``**
     
     Create for password store of Grafana!
     ```
