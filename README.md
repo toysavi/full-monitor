@@ -83,9 +83,16 @@ This repository contains the setup for running Grafana with NGINX as a reverse p
     ```
     mkdir -p env_file
     ```
-4. **Modify file ``nginx-grafana.conf``**
+4. **Make a password for ``Grafana Admin``**
+    ```
+    echo "GF_SECURITY_ADMIN_PASSWORD=YourStrongP@ssword" > env_file/GF_SECURITY_ADMIN_PASSWORD
+    ```
+    ``Note``: Replace "YourStrongP@ssword" to your own password
+
+5. **Modify file ``nginx-grafana.conf``**
     
-    - Change "view.doamin.com" to your domain
+    - Change "view.doamin.com" to your domain. ``vi nginx-grafana.conf``
+    
         ```
         worker_processes 1;
 
@@ -153,28 +160,22 @@ This repository contains the setup for running Grafana with NGINX as a reverse p
             }
         }
         ```
-5. **Make a password for ``Grafana Admin``**
-    ```
-    echo "GF_SECURITY_ADMIN_PASSWORD=YourStrongP@ssword" > env_file/GF_SECURITY_ADMIN_PASSWORD
-    ```
-    ``Note``: Replace "YourStrongP@ssword" to your own password
-
 6. **Create direcitory `ssl`**
     
     Create directory for Certifcate store!
     ```
     mkdir ssl/
     ```
-    ``Note``: copy your private key ssl to ./ssh
+    ``Note``: copy your private key ssl to ``./ssh``
     
     - Rename certificate file to ``cert.crt``
     - Rename key file to ``cert.key``.
 
 7. **Grant Permission to 775**
     ```
-    chmod 755 -R /Grafana
+    chmod 755 -R /Grafana/
     ```
-8. **Start the Services**
+8. **Start the Dcoker Compose services**
     ```
     docker-compose up -d
     ```
