@@ -15,7 +15,7 @@ services:
   nginx-proxy-grafana:
     image: nginx:latest
     ports:
-      - "80:80"
+      - "80:80" 
       - "443:443"
     volumes:
       - ./nginx-grafana.conf:/etc/nginx/nginx.conf:ro
@@ -24,6 +24,7 @@ services:
       - grafana
     networks:
       - grafana_net_frontend
+      - zbx_net_backend
 
 networks:
   grafana_net_frontend:
