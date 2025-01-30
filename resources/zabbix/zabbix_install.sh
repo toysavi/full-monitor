@@ -68,6 +68,17 @@ DB_PASSWORD=${DB_PASSWORD}
 EOF
 }
 
+# Function to ensure network exists
+ensure_network() {
+    network_name=$1
+    if ! docker network ls --filter name=^${network_name}$ --format "{{ .Name }}" | grep -w "${network_name}" &> /dev/null ; then
+        echo "Creating network ${network_name}..."
+        docker network create --driver overlay --attachable ${network_name}
+    else
+        echo "Network ${network_name} already exists."
+    fi
+}
+
 # Function to deploy based on user choice
 deploy_docker() {
     case $1 in
@@ -103,11 +114,17 @@ fi
 # Ensure Docker Compose is installed
 install_docker_compose
 
+# Initialize Docker Swarm if not already initialized
+docker swarm init 2>/dev/null || true
+
 # Configure the database
 configure_database
 
 # Create the .env file
 create_env_file
+
+# Ensure the required Docker network exists
+ensure_network "zbx_net_frontend"
 
 # Deploy based on user selection
 deploy_docker "$choice"
