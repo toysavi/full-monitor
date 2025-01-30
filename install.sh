@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Asking to install Docker Server for standalone node or multi nodes as swarm mode
 echo "Do you want to install Docker for a single node or multi-node setup?"
 echo "1) Single Node"
 echo "2) Multi Node"
@@ -20,6 +21,15 @@ case $choice in
         ;;
 esac
 
+# Asking to continue to the next step
+read -p "Do you want to continue to the next step? (yes/no): " continue_next
+
+if [[ "$continue_next" != "yes" ]]; then
+    echo "Skipping next step."
+    exit 0
+fi
+
+# Asking to install Zabbix Server
 echo "Do you want to install Zabbix server?"
 read -p "Enter your choice (yes/no): " install_zabbix
 
@@ -28,4 +38,31 @@ if [[ "$install_zabbix" == "yes" ]]; then
     ./resources/zabbix/zabbix_install.sh
 else
     echo "Skipping Zabbix server installation."
+fi
+
+# Asking to continue to the next step
+read -p "Do you want to continue to the next step? (yes/no): " continue_next
+
+if [[ "$continue_next" != "yes" ]]; then
+    echo "Skipping next step."
+    exit 0
+fi
+
+# Asking to install Grafana Monitor
+echo "Do you want to install Grafana Monitor?"
+read -p "Enter your choice (yes/no): " install_grafana
+
+if [[ "$install_grafana" == "yes" ]]; then
+    echo "Installing Grafana Monitor..."
+    ./resources/grafana/install_grafana.sh
+else
+    echo "Skipping Grafana Monitor installation."
+fi
+
+# Asking to continue to the next step
+read -p "Do you want to continue to the next step? (yes/no): " continue_next
+
+if [[ "$continue_next" != "yes" ]]; then
+    echo "Skipping next step."
+    exit 0
 fi
