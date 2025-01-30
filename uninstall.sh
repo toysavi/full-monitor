@@ -1,5 +1,15 @@
 #!/bin/bash
 
+### Confirmation for Docker uninstallation ###
+read -p "Do you want to delete or drop docker stack? (yes/no): " stack_delete_confirm
+
+if [[ "$stack_delete_confirm" == "yes" ]]; then
+    echo "Proceeding with Docker stack deletion..."
+    ./resources/zabbix/drop_docker-stack.sh
+else
+    echo "Skipping Docker stack deletion."
+fi
+
 read -p "Are you sure you want to uninstall Zabbix and Docker? (yes/no): " confirm
 
 if [[ "$confirm" != "yes" ]]; then
