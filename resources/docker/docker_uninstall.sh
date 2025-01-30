@@ -1,46 +1,54 @@
 #!/bin/bash
 
-echo "Stopping and removing all Docker containers..."
-sudo docker ps -aq | xargs -r sudo docker stop
-sudo docker ps -aq | xargs -r sudo docker rm
+echo "Checking for running Docker containers..."
 
-echo "Removing all Docker volumes..."
-sudo docker volume ls -q | xargs -r sudo docker volume rm
-
-echo "Removing all Docker networks..."
-sudo docker network ls -q | xargs -r sudo docker network rm
-
-echo "Leaving Docker Swarm (if in swarm mode)..."
-sudo docker swarm leave --force 2>/dev/null || echo "Not in swarm mode."
-
-echo "Removing Docker Compose (if installed)..."
-sudo rm -f /usr/local/bin/docker-compose /usr/bin/docker-compose
-
-echo "Uninstalling Docker..."
-if [ -f /etc/os-release ]; then
-    . /etc/os-release
-    case "$ID" in
-        ubuntu|debian)
-            sudo apt-get remove -y docker-ce docker-ce-cli containerd.io
-            sudo apt-get purge -y docker-ce docker-ce-cli containerd.io
-            sudo apt-get autoremove -y
-            ;;
-        centos|rhel|ol)
-            sudo yum remove -y docker-ce docker-ce-cli containerd.io
-            sudo yum autoremove -y
-            ;;
-        *)
-            echo "Unsupported OS: $ID"
-            exit 1
-            ;;
-    esac
-else
-    echo "Cannot detect the operating system."
+# Check if any containers are running
+if [ "$(docker ps -q)" ]; then
+    echo "Error: There are running containers. Please stop them before proceeding."
     exit 1
 fi
 
+echo "Uninstalling Docker..."
+
+# Remove all Docker containers
+echo "Removing all Docker containers..."
+docker ps -aq | xargs -r docker rm
+
+# Remove all Docker volumes
+echo "Removing all Docker volumes..."
+docker volume ls -q | xargs -r docker volume rm
+
+# Remove all Docker networks except predefined ones
+echo "Removing all Docker networks..."
+docker network ls --format '{{.Name}}' | grep -vE 'bridge|host|none' | xargs -r docker network rm
+
+# Leave Docker Swarm mode if active
+if docker info | grep -q "Swarm: active"; then
+    echo "Leaving Docker Swarm mode..."
+    docker swarm leave --force
+else
+    echo "Not in swarm mode."
+fi
+
+# Remove Docker Compose if installed
+if command -v docker-compose &> /dev/null; then
+    echo "Removing Docker Compose..."
+    sudo rm -f $(which docker-compose)
+fi
+
+# Uninstall Docker
+echo "Uninstalling Docker..."
+if [ -x "$(command -v apt-get)" ]; then
+    sudo apt-get remove -y docker-ce docker-ce-cli containerd.io
+    sudo apt-get purge -y docker-ce docker-ce-cli containerd.io
+elif [ -x "$(command -v yum)" ]; then
+    sudo yum remove -y docker-ce docker-ce-cli containerd.io
+fi
+
+# Clean up residual Docker data
 echo "Removing Docker directories..."
 sudo rm -rf /var/lib/docker
-sudo rm -rf /var/lib/containerd
+sudo rm -rf /etc/docker
+sudo rm -rf ~/.docker
 
-echo "Docker and Docker Compose have been completely removed."
+echo "Docker has been uninstalled successfully."
