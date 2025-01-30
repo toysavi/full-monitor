@@ -1,0 +1,61 @@
+version: '3.5'
+
+services:
+  zabbix-server:
+    image: zabbix/zabbix-server-pgsql:alpine-6.4-latest
+    ports:
+      - "10051:10051"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+      - ./zbx_env/usr/lib/zabbix/alertscripts:/usr/lib/zabbix/alertscripts:ro
+      - ./zbx_env/usr/lib/zabbix/externalscripts:/usr/lib/zabbix/externalscripts:ro
+      - ./zbx_env/var/lib/zabbix/dbscripts:/var/lib/zabbix/dbscripts:ro
+      - ./zbx_env/var/lib/zabbix/export:/var/lib/zabbix/export:rw
+      - ./zbx_env/var/lib/zabbix/modules:/var/lib/zabbix/modules:ro
+      - ./zbx_env/var/lib/zabbix/enc:/var/lib/zabbix/enc:ro
+      - ./zbx_env/var/lib/zabbix/ssh_keys:/var/lib/zabbix/ssh_keys:ro
+      - ./zbx_env/var/lib/zabbix/mibs:/var/lib/zabbix/mibs:ro
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 20000
+        hard: 40000
+    deploy:
+      mode: replicated
+      replicas: 1
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 1G
+    env_file:
+      - ./env_vars/.env_db_pgsql
+      - ./env_vars/.env_srv
+    secrets:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+    depends_on:
+      - postgres-server
+    networks:
+      zbx_net_backend:
+        aliases:
+          - zabbix-server
+          - zabbix-server-pgsql
+          - zabbix-server-alpine-pgsql
+          - zabbix-server-pgsql-alpine
+      zbx_net_frontend:
+
+networks:
+  zbx_net_backend:
+    external: true
+  zbx_net_frontend:
+    external: true
+
+secrets:
+  POSTGRES_USER:
+    external: true
+  POSTGRES_PASSWORD:
+    external: true

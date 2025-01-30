@@ -1,0 +1,33 @@
+version: '3.5'
+
+services:
+  postgres-server:
+    image: postgres:15-alpine
+    volumes:
+      - ./zbx_env/var/lib/postgresql/data:/var/lib/postgresql/data:rw
+    env_file:
+      - ./env_vars/.env_db_pgsql
+    secrets:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+    stop_grace_period: 1m
+    networks:
+      zbx_net_backend:
+        aliases:
+          - postgres-server
+          - pgsql-server
+          - pgsql-database
+          - grafana_net_backend
+    deploy:
+      mode: replicated
+      replicas: 1
+
+networks:
+  zbx_net_backend:
+    external: true
+
+secrets:
+  POSTGRES_USER:
+    external: true
+  POSTGRES_PASSWORD:
+    external: true

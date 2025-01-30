@@ -17,12 +17,13 @@ deploy_docker() {
     case $1 in
         1)
             echo "Deploying Docker in single-node mode..."
-            docker-compose -f $docker-compose-single-node.yml up -d
+            docker-compose -f ./resources/zabbix/task/single-node/docker-compose-single-node.yaml up -d
+            docker-compose -f ./resources/zabbix/task/single-node/docker-compose.nginx.yml up -d
             ;;
         2)
             echo "Deploying Docker in swarm mode..."
             docker swarm init  # Ensure Swarm is initialized
-            docker stack deploy -c docker-compose-multi-node.yml my_stack
+            docker stack deploy -c ./resources/zabbix/docker-compose-multi-node.yaml stack_zabbix
             ;;
         *)
             echo "Invalid option. Exiting."
