@@ -26,9 +26,10 @@ case $choice in
 esac
 
 # Proceeding to the next step
+echo ----------------------------------------
 echo "Starting application deployment..."
+echo ----------------------------------------
 # Call your deployment script or functions here
-
 
 # Asking to install Zabbix Server
 echo "Do you want to install Zabbix server?"
@@ -36,7 +37,7 @@ read -p "Enter your choice (yes/no): " install_zabbix
 
 if [[ "$install_zabbix" == "yes" ]]; then
     echo "Installing Zabbix server..."
-    ./resources/zabbix/zabbix_install.sh
+    ./resources/zabbix-6.4.9-main/zabbix_install.sh
 else
     echo "Skipping Zabbix server installation."
 fi
@@ -45,6 +46,22 @@ if [[ "$continue_next" != "yes" ]]; then
     echo "Skipping next step."
     exit 0
 fi
+
+# # Asking to install Zabbix Server
+# echo "Do you want to install Zabbix server?"
+# read -p "Enter your choice (yes/no): " install_zabbix
+
+# if [[ "$install_zabbix" == "yes" ]]; then
+#     echo "Installing Zabbix server..."
+#     ./resources/zabbix/zabbix_install.sh
+# else
+#     echo "Skipping Zabbix server installation."
+# fi
+
+# if [[ "$continue_next" != "yes" ]]; then
+#     echo "Skipping next step."
+#     exit 0
+# fi
 
 # Asking to install Grafana Monitor
 echo "Do you want to install Grafana Monitor?"
