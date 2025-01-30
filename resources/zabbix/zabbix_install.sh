@@ -16,9 +16,13 @@ install_docker_compose() {
 deploy_docker() {
     case $1 in
         1)
-            echo "Deploying Docker in single-node mode..."
-            docker-compose -f ./resources/zabbix/task/single-node/docker-compose-single-node.yaml up -d
-            docker-compose -f ./resources/zabbix/task/single-node/docker-compose.nginx.yml up -d
+            echo "Deploying Docker in single-node as Swarm mode..."
+            docker swarm init  # Ensure Swarm is initialized
+            docker stack deploy -c ./resources/zabbix/task/single-node/docker-compose-single-node.yaml stack_zabbix-server
+            docker stack deploy -c ./resources/zabbix/task/single-node/docker-compose.nginx.yml stack_nginx
+            
+            # docker-compose -f ./resources/zabbix/task/single-node/docker-compose-single-node.yaml up -d
+            # docker-compose -f ./resources/zabbix/task/single-node/docker-compose.nginx.yml up -d
             ;;
         2)
             echo "Deploying Docker in swarm mode..."
