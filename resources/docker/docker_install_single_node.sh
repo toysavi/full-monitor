@@ -9,30 +9,46 @@ install_docker_debian() {
         curl \
         gnupg \
         lsb-release
-    
+
     curl -fsSL https://download.docker.com/linux/$ID/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-    
+
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/$ID \
       $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-    
+
     sudo apt-get update
     sudo apt-get install -y docker-ce docker-ce-cli containerd.io
-    
+
     sudo systemctl enable --now docker
-    sudo docker run hello-world
+
+
+    # Install Docker Compose
+    sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    sudo chmod +x /usr/local/bin/docker-compose
+    sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+
+    # Verify installation
+    docker-compose --version
 }
 
 # Function to install Docker on RHEL-based distributions (CentOS, RHEL, Oracle Linux)
 install_docker_rhel() {
     sudo yum update -y
     sudo yum install -y yum-utils
-    
+
     sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-    
+
     sudo yum install -y docker-ce docker-ce-cli containerd.io
-    
+
     sudo systemctl enable --now docker
-    sudo docker run hello-world
+ 
+
+    # Install Docker Compose
+    sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    sudo chmod +x /usr/local/bin/docker-compose
+    sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+
+    # Verify installation
+    docker-compose --version
 }
 
 # Detect OS and install Docker accordingly
