@@ -1,31 +1,37 @@
 #!/bin/bash
 
-# Check if stack name is provided
-if [ -z "$1" ]; then
-    echo "Usage: $0 <stack_name>"
-    exit 1
+# List all Docker stacks
+echo "Current Docker stacks:"
+docker stack ls
+
+# Get the names of all Docker stacks
+STACK_NAMES=$(docker stack ls --format "{{.Name}}")
+
+# Check if there are any stacks
+if [ -z "$STACK_NAMES" ]; then
+    echo "No Docker stacks found."
+    exit 0
 fi
 
-STACK_NAME=$1
+# Loop through each stack and ask for confirmation to delete
+for STACK_NAME in $STACK_NAMES; do
+    read -p "Do you want to delete the stack $STACK_NAME? (yes/no): " CONFIRM
+    if [[ "$CONFIRM" == "yes" ]]; then
+        echo "Deleting stack $STACK_NAME..."
+        docker stack rm "$STACK_NAME"
 
-# Ask for confirmation to delete the stack
-read -p "Are you sure you want to delete the stack $STACK_NAME? (yes/no): " CONFIRM
-if [[ "$CONFIRM" != "yes" ]]; then
-    echo "Aborting."
-    exit 1
-fi
+        # Wait for the stack to be removed
+        echo "Waiting for stack $STACK_NAME to be removed..."
+        while docker stack ls | grep -q "$STACK_NAME"; do
+            sleep 1
+        done
 
-# Remove the Docker stack
-docker stack rm "$STACK_NAME"
-
-# Wait for the stack to be removed
-echo "Waiting for stack $STACK_NAME to be removed..."
-while docker stack ls | grep -q "$STACK_NAME"; do
-    sleep 1
+        echo "Stack $STACK_NAME has been removed."
+    else
+        echo "Skipping stack $STACK_NAME."
+    fi
 done
 
-echo "Stack $STACK_NAME has been removed."
-
-# List current Docker stacks
-echo "Current Docker stacks:"
+# List remaining Docker stacks
+echo "Remaining Docker stacks:"
 docker stack ls
