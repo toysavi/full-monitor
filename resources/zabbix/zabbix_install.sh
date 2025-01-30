@@ -37,14 +37,10 @@ configure_database() {
             echo
             ;;
         3)
-            echo "Deploying Postgres database in Docker..."
-            docker run -d \
-                --name postgres_db \
-                -e POSTGRES_USER=postgres \
-                -e POSTGRES_PASSWORD=postgres \
-                -p 5432:5432 \
-                postgres
-            DB_HOST="localhost"
+            echo "Deploying PostgreSQL database using Docker Compose..."
+            docker swarm init 2>/dev/null || true  # Initialize Swarm if not already
+            docker stack deploy -c ./resources/zabbix/task/dbs/docker-compose.postgres.yaml stack_postgres
+            DB_HOST="postgres_db"  # Ensure this matches the service name in your compose file
             DB_PORT="5432"
             DB_USER="postgres"
             DB_PASSWORD="postgres"
@@ -77,13 +73,11 @@ deploy_docker() {
     case $1 in
         1)
             echo "Deploying Docker in single-node mode..."
-            docker swarm init 2>/dev/null || true  # Initialize Swarm if not already
             docker stack deploy -c ./resources/zabbix/task/single-node/docker-compose-single-node.yaml stack_zabbix-server
             docker stack deploy -c ./resources/zabbix/task/single-node/docker-compose.nginx.yml stack_nginx
             ;;
         2)
             echo "Deploying Docker in Swarm mode..."
-            docker swarm init 2>/dev/null || true
             docker stack deploy -c ./resources/zabbix/docker-compose-multi-node.yaml stack_zabbix
             ;;
         *)
