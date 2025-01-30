@@ -17,7 +17,7 @@ deploy_docker() {
     case $1 in
         1)
             echo "Deploying Docker in single-node mode..."
-            docker-compose -f docker-compose-single-node.yml up -d
+            docker-compose -f $docker-compose-single-node.yml up -d
             ;;
         2)
             echo "Deploying Docker in swarm mode..."
