@@ -9,10 +9,10 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - zabbix-network
+      - zbx_net_frontend
 
 networks:
-  zabbix-network:
+  zbx_net_frontend:
 
 volumes:
   postgres_data:

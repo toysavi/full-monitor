@@ -125,6 +125,7 @@ create_env_file
 
 # Ensure the required Docker network exists
 ensure_network "zbx_net_frontend"
+ensure_network "zbx_net_backend"
 
 # Deploy based on user selection
 deploy_docker "$choice"
