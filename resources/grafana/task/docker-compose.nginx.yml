@@ -1,0 +1,17 @@
+version: '3.5'
+
+services:
+  nginx-proxy:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "9000:9000"
+    volumes:
+      - ./resources/grafana/nginx-grafana.conf:/etc/nginx/nginx.conf:ro
+      - ./resources/ssl:/etc/nginx/ssl:ro
+    networks:
+      - zbx_net_frontend
+
+networks:
+  zbx_net_frontend:
+    external: true

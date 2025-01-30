@@ -12,19 +12,6 @@ services:
       - grafana_net_frontend
     volumes:
       - grafana_data:/var/lib/grafana  # Persist Grafana data
-  nginx-proxy-grafana:
-    image: nginx:latest
-    ports:
-      - "80:80" 
-      - "443:443"
-    volumes:
-      - ./nginx-grafana.conf:/etc/nginx/nginx.conf:ro
-      - ./ssl:/etc/nginx/ssl:ro
-    depends_on:
-      - grafana
-    networks:
-      - grafana_net_frontend
-      - zbx_net_backend
 
 networks:
   grafana_net_frontend:
@@ -34,7 +21,7 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: 172.16.238.0/24
+        - subnet: 172.16.100.0/24
 
   grafana_net_backend:
     driver: bridge
@@ -44,6 +31,10 @@ networks:
     ipam:
       driver: default
       config:
-        - subnet: 172.16.239.0/24
+        - subnet: 172.16.101.0/24
+
+  zbx_net_backend:
+    external: true
+
 volumes:
-  grafana_data:  # Declare volume to persist Grafana data
+  grafana_data:
