@@ -1,10 +1,11 @@
 #!/bin/bash
 
-# Asking to install Docker Server for standalone node or multi nodes as swarm mode
+# Prompting the user for Docker installation options
 echo "Do you want to install Docker for a single node or multi-node setup?"
 echo "1) Single Node"
 echo "2) Multi Node"
-read -p "Enter your choice (1 or 2): " choice
+echo "3) Skip Docker installation and continue to the next step"
+read -p "Enter your choice (1, 2, or 3): " choice
 
 case $choice in
     1)
@@ -15,16 +16,19 @@ case $choice in
         echo "Installing Docker for a multi-node setup..."
         ./resources/docker/docker_install_multi_node.sh
         ;;
+    3)
+        echo "Skipping Docker installation. Continuing to the next step..."
+        ;;
     *)
         echo "Invalid choice. Exiting."
         exit 1
         ;;
 esac
 
-if [[ "$continue_next" != "yes" ]]; then
-    echo "Skipping next step."
-    exit 0
-fi
+# Proceeding to the next step
+echo "Starting application deployment..."
+# Call your deployment script or functions here
+
 
 # Asking to install Zabbix Server
 echo "Do you want to install Zabbix server?"
