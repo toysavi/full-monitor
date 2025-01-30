@@ -21,9 +21,6 @@ case $choice in
         ;;
 esac
 
-# Asking to continue to the next step
-read -p "Do you want to continue to the next step? (yes/no): " continue_next
-
 if [[ "$continue_next" != "yes" ]]; then
     echo "Skipping next step."
     exit 0
@@ -40,9 +37,6 @@ else
     echo "Skipping Zabbix server installation."
 fi
 
-# Asking to continue to the next step
-read -p "Do you want to continue to the next step? (yes/no): " continue_next
-
 if [[ "$continue_next" != "yes" ]]; then
     echo "Skipping next step."
     exit 0
@@ -58,9 +52,6 @@ if [[ "$install_grafana" == "yes" ]]; then
 else
     echo "Skipping Grafana Monitor installation."
 fi
-
-# Asking to continue to the next step
-read -p "Do you want to continue to the next step? (yes/no): " continue_next
 
 if [[ "$continue_next" != "yes" ]]; then
     echo "Skipping next step."
