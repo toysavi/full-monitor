@@ -147,22 +147,9 @@ services:
 
 networks:
   zbx_net_frontend:
-    driver: bridge
-    driver_opts:
-      com.docker.network.enable_ipv6: "false"
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.16.238.0/24
+    driver: overlay
   zbx_net_backend:
-    driver: bridge
-    driver_opts:
-      com.docker.network.enable_ipv6: "false"
-    internal: true
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.16.239.0/24
+    driver: overlay
 
 volumes:
   snmptraps:

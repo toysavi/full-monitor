@@ -13,6 +13,7 @@ services:
 
 networks:
   zbx_net_frontend:
+    driver: overlay
 
 volumes:
   postgres_data:
